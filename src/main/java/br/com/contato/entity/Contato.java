@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,12 +22,12 @@ public class Contato implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="ID", nullable = false)
-   // @JsonIgnore
     private Long id;
 
     private String nome;
 
-    private String telefone;
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Telefone> telefoneList;
 
     private String email;
 }

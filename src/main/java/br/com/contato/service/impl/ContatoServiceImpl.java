@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ContatoServiceImpl implements ContatoService {
@@ -28,7 +29,8 @@ public class ContatoServiceImpl implements ContatoService {
                 .findById(id)
                 .map(updateContato -> {
                     updateContato.setNome(contato.getNome());
-                    updateContato.setTelefone(contato.getTelefone());
+                    //updateContato.setTelefoneList(contato.getTelefoneList());
+                    updateContato.setTelefoneList(contato.getTelefoneList().stream().collect(Collectors.toList()));
                     updateContato.setEmail(contato.getEmail());
                     contatoRepository.save(updateContato);
                     return contatoRepository.findById(id);
