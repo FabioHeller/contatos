@@ -33,7 +33,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nome\":\"Fabio\",\r\n    \"telefone\":\"3198765-1010\",\r\n    \"email\":\"teste@teste.com.br\"\r\n}",
+					"raw": "{\r\n    \"nome\":\"Fabio\",\r\n    \"telefoneList\":[\r\n    {\"telefone\":\"3198765-1111\"},\r\n    {\"telefone\":\"3198765-2222\"},\r\n    {\"telefone\":\"3198765-3333\"}\r\n    ],\r\n    \"email\":\"teste@teste.com.br\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -62,7 +62,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nome\":\"Fabio Santos\",\r\n    \"telefone\":\"3198765-1010\",\r\n    \"email\":\"teste@teste.com.br\"\r\n}",
+					"raw": "{\r\n    \"nome\":\"Fabio\",\r\n    \"telefoneList\":[\r\n    {\"telefone\":\"3198765-1111\"}\r\n    ],\r\n    \"email\":\"teste@teste.com.br\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
