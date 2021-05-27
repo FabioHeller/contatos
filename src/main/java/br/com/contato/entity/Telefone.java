@@ -1,19 +1,16 @@
 package br.com.contato.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
+@Table(name="TELEFONES")
 @Data
-@Builder
-@Entity(name="TELEFONES")
+@NoArgsConstructor
 public class Telefone  implements Serializable {
 
     private static final long serialVersionUID = -2351556715171360394L;
@@ -29,3 +26,6 @@ public class Telefone  implements Serializable {
     private String telefone;
 
 }
+
+
+
