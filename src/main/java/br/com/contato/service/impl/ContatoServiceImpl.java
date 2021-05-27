@@ -1,7 +1,7 @@
 package br.com.contato.service.impl;
 
 import br.com.contato.entity.Contato;
-import br.com.contato.exception.ContatoNotFoundException;
+import br.com.contato.exception.ContatoUnprocessableEntityException;
 import br.com.contato.repository.ContatoRepository;
 import br.com.contato.service.ContatoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +33,12 @@ public class ContatoServiceImpl implements ContatoService {
                     updateContato.setEmail(contato.getEmail());
                     contatoRepository.save(updateContato);
                     return contatoRepository.findById(id);
-                }).orElseThrow(()-> new ContatoNotFoundException("Id nao localizado"));
+                }).orElseThrow(()-> new ContatoUnprocessableEntityException("Id nao localizado"));
     }
 
     @Override
     public Contato searchContatoById(Long id) {
-        return contatoRepository.findById(id).orElseThrow(()->new ContatoNotFoundException("Id nao localizado"));
+        return contatoRepository.findById(id).orElseThrow(()->new ContatoUnprocessableEntityException("Id nao localizado"));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ContatoServiceImpl implements ContatoService {
 
     @Override
     public void deleteContatoById(Long id) {
-        contatoRepository.findById(id).orElseThrow(()-> new ContatoNotFoundException("Id nao localizado"));
+        contatoRepository.findById(id).orElseThrow(()-> new ContatoUnprocessableEntityException("Id nao localizado"));
         contatoRepository.deleteById(id);
     }
 }
