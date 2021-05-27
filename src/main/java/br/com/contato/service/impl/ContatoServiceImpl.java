@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class ContatoServiceImpl implements ContatoService {
 
     @Autowired
-    ContatoRepository contatoRepository;
+    private ContatoRepository contatoRepository;
 
     @Override
     public Contato newContato(Contato contato) {
@@ -29,7 +29,6 @@ public class ContatoServiceImpl implements ContatoService {
                 .findById(id)
                 .map(updateContato -> {
                     updateContato.setNome(contato.getNome());
-                    //updateContato.setTelefoneList(contato.getTelefoneList());
                     updateContato.setTelefoneList(contato.getTelefoneList().stream().collect(Collectors.toList()));
                     updateContato.setEmail(contato.getEmail());
                     contatoRepository.save(updateContato);

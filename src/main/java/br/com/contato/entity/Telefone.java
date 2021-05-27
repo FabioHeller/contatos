@@ -1,5 +1,6 @@
 package br.com.contato.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,8 +20,11 @@ public class Telefone  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @JsonIgnore
     private Long id;
+
+    @JsonIgnore
+    private Long contato_id;
 
     private String telefone;
 
