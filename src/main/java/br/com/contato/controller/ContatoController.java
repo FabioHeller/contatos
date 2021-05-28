@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
@@ -20,13 +21,13 @@ public class ContatoController {
 
     @ApiOperation(value = "Inserir novo contato")
     @PostMapping( consumes = "application/json")
-    public ResponseEntity<?> newContato ( @RequestBody Contato contato){
+    public ResponseEntity<?> newContato ( @RequestBody @Valid Contato contato){
         return new ResponseEntity<Contato>(contatoService.newContato(contato), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Atualizar contato por ID")
     @PutMapping(path = ("/atualizar_por_id"), consumes = "application/json")
-    public ResponseEntity<?> updateContatoById ( @RequestBody Contato contato, @RequestParam("id") @NotBlank Long id){
+    public ResponseEntity<?> updateContatoById ( @RequestBody @Valid Contato contato, @RequestParam("id") @NotBlank Long id){
         return ResponseEntity.ok().body(contatoService.updateContatoById(contato, id));
     }
 

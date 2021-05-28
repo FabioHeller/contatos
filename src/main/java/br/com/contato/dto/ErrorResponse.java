@@ -8,9 +8,9 @@ import lombok.*;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponse {
-    @JsonProperty("code")
+    @JsonProperty("code_erro")
     private String code;
 
-    @JsonProperty("message")
+    @JsonProperty("message_erro")
     private String messageError;
 }

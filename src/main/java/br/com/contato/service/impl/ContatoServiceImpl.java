@@ -33,12 +33,12 @@ public class ContatoServiceImpl implements ContatoService {
                     updateContato.setEmail(contato.getEmail());
                     contatoRepository.save(updateContato);
                     return contatoRepository.findById(id);
-                }).orElseThrow(()-> new ContatoUnprocessableEntityException("Id nao localizado"));
+                }).orElseThrow(()-> new ContatoUnprocessableEntityException("001","Id nao localizado"));
     }
 
     @Override
     public Contato searchContatoById(Long id) {
-        return contatoRepository.findById(id).orElseThrow(()->new ContatoUnprocessableEntityException("Id nao localizado"));
+        return contatoRepository.findById(id).orElseThrow(()->new ContatoUnprocessableEntityException("001","Id nao localizado"));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ContatoServiceImpl implements ContatoService {
 
     @Override
     public void deleteContatoById(Long id) {
-        contatoRepository.findById(id).orElseThrow(()-> new ContatoUnprocessableEntityException("Id nao localizado"));
+        contatoRepository.findById(id).orElseThrow(()-> new ContatoUnprocessableEntityException("001","Id nao localizado"));
         contatoRepository.deleteById(id);
     }
 }

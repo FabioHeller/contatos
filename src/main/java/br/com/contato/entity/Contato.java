@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class Contato implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Nome não pode ser vazio")
     private String nome;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
