@@ -1,9 +1,9 @@
 package br.com.contato.controller;
 
 import br.com.contato.entity.Contato;
-import br.com.contato.entity.Telefone;
 import br.com.contato.repository.ContatoRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import br.com.contato.service.impl.ContatoServiceImpl;
+import br.com.contato.utils.Utils;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.when;
 
@@ -25,26 +22,29 @@ import static org.mockito.Mockito.when;
 @AutoConfigureMockMvc
 public class ContatoControllerTest {
 
+    public static final String API_V1_CONTATOS = "/api/v1/contatos";
+    public static final String API_V1_CONTATOS_DELETAR_POR_ID = "/api/v1/contatos/deletar_por_id";
+    public static final String API_V1_CONTATOS_BUSCAR_POR_ID = "/api/v1/contatos/buscar_por_id";
+    public static final String API_V1_CONTATOS_ATUALIZAR_POR_ID = "/api/v1/contatos/atualizar_por_id";
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    ObjectMapper objectMapper;
+    ContatoServiceImpl contatoService;
 
     @Mock
     ContatoRepository contatoRepository;
 
+    private static final String FILE_CONTATO_VALIDO_JSON = "contato_valido.json";
+    private Utils utils = new Utils();
+
     @Test
-    public void deveRetornarInserirNovoContatoSucesso () throws Exception {
-        String json = "{\n" +
-                "    \"nome\":\"Pedro\",\n" +
-                "    \"telefoneList\":[\n" +
-                "    {\"telefone\":\"3198765-1111\"}\n" +
-                "    ],\n" +
-                "    \"email\":\"teste@teste.com.br\"\n" +
-                "}";
+    public void deveRetornarSucessoNovoContato () throws Exception {
+        Contato contato = utils.buildObjectByJson(FILE_CONTATO_VALIDO_JSON, Contato.class);
+        contato.setId(null);
+        String json = utils.toJsonString(contato);
         this.mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/contatos")
+                MockMvcRequestBuilders.post(API_V1_CONTATOS)
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -52,16 +52,54 @@ public class ContatoControllerTest {
     }
 
     @Test
-    public void deveRetornarExcecaoAoSalvarContatoSemNome () throws Exception {
-        String json = "{\n" +
-                "    \"nome\":\"\",\n" +
-                "    \"telefoneList\":[\n" +
-                "    {\"telefone\":\"3198765-1111\"}\n" +
-                "    ],\n" +
-                "    \"email\":\"teste@teste.com.br\"\n" +
-                "}";
+    public void deveRetornarSucessoDeletarContato () throws Exception {
+        Contato contato = utils.buildObjectByJson(FILE_CONTATO_VALIDO_JSON, Contato.class);
+        contatoService.newContato(contato);
         this.mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/contatos")
+                MockMvcRequestBuilders.delete(API_V1_CONTATOS_DELETAR_POR_ID)
+                        .queryParam("id", String.valueOf(contato.getId()))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(200));
+    }
+
+    @Test
+    public void deveRetornarSucessoBuscarContato () throws Exception {
+        Contato contato = utils.buildObjectByJson(FILE_CONTATO_VALIDO_JSON, Contato.class);
+        contatoService.newContato(contato);
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.get(API_V1_CONTATOS_BUSCAR_POR_ID)
+                        .queryParam("id", contato.getId().toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(200));
+    }
+
+    @Test
+    public void deveRetornarSucessoAtualizarContato () throws Exception {
+        Contato contato = utils.buildObjectByJson(FILE_CONTATO_VALIDO_JSON, Contato.class);
+        contatoService.newContato(contato);
+        contato.setNome("Matias Ferreira");
+        contato.setEmail("novoemail@email.com");
+        when(contatoRepository.findById(contato.getId())).thenReturn(Optional.of(contato));
+        String json = utils.toJsonString(contato);
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(API_V1_CONTATOS_ATUALIZAR_POR_ID)
+                        .content(json)
+                        .queryParam("id", "1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(200));
+    }
+
+    @Test
+    public void deveRetornarExcecaoNovoContatoSemNome () throws Exception {
+        Contato contato = utils.buildObjectByJson(FILE_CONTATO_VALIDO_JSON, Contato.class);
+        contato.setId(null);
+        contato.setNome(null);
+        String json = utils.toJsonString(contato);
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.post(API_V1_CONTATOS)
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -69,17 +107,13 @@ public class ContatoControllerTest {
     }
 
     @Test
-    public void deveRetornarExcecaoAoAtualizarPorCampoNaoInformado () throws Exception {
-        when(contatoRepository.findById(getContatoTest().getId())).thenReturn(Optional.of(getContatoTest()));
-        String json = "{\n" +
-                "    \"nome\":\"\",\n" +
-                "    \"telefoneList\":[\n" +
-                "    {\"telefone\":\"3198765-1111\"}\n" +
-                "    ],\n" +
-                "    \"email\":\"teste@teste.com.br\"\n" +
-                "}";
+    public void deveRetornarExcecaoAtualizarContatoSemNome () throws Exception {
+        Contato contato = utils.buildObjectByJson(FILE_CONTATO_VALIDO_JSON, Contato.class);
+        contato.setNome(null);
+        when(contatoRepository.findById(contato.getId())).thenReturn(Optional.of(contato));
+        String json = utils.toJsonString(contato);
         this.mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/v1/contatos/atualizar_por_id")
+                MockMvcRequestBuilders.put(API_V1_CONTATOS_ATUALIZAR_POR_ID)
                         .content(json)
                         .queryParam("id", "1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -87,18 +121,41 @@ public class ContatoControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(400));
     }
 
-    private Contato getContatoTest(){
-        Contato contato = new Contato();
-        Telefone telefone = new Telefone();
-        List<Telefone> listTelefone = new ArrayList<Telefone>();
-        contato.setId(1L);
-        contato.setNome("Nome");
-        contato.setEmail("teste@teste.com");
-        telefone.setId(1L);
-        telefone.setContato_id(contato.getId());
-        telefone.setTelefone("12341234");
-        listTelefone.add(telefone);
-        contato.setTelefoneList(listTelefone.stream().collect(Collectors.toList()));
-        return contato;
+    @Test
+    public void deveRetornarExcecaoAtualizarContatoQueryParamInesistente () throws Exception {
+        Contato contato = utils.buildObjectByJson(FILE_CONTATO_VALIDO_JSON, Contato.class);
+        when(contatoRepository.findById(contato.getId())).thenReturn(Optional.of(contato));
+        String json = utils.toJsonString(contato);
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.put(API_V1_CONTATOS_ATUALIZAR_POR_ID)
+                        .content(json)
+                        .queryParam("id", "2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    public void deveRetornarExcecaoBuscarContatoQueryParamInesistente () throws Exception {
+        Contato contato = utils.buildObjectByJson(FILE_CONTATO_VALIDO_JSON, Contato.class);
+        when(contatoRepository.findById(contato.getId())).thenReturn(Optional.of(contato));
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.get(API_V1_CONTATOS_BUSCAR_POR_ID)
+                        .queryParam("id", "2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
+    }
+
+    @Test
+    public void deveRetornarExcecaoDeletarContatoQueryParamInesistente () throws Exception {
+        Contato contato = utils.buildObjectByJson(FILE_CONTATO_VALIDO_JSON, Contato.class);
+        when(contatoRepository.findById(contato.getId())).thenReturn(Optional.of(contato));
+        this.mockMvc.perform(
+                MockMvcRequestBuilders.delete(API_V1_CONTATOS_DELETAR_POR_ID)
+                        .queryParam("id", "2")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(422));
     }
 }

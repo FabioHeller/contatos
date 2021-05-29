@@ -1,30 +1,33 @@
 package br.com.contato.service.impl;
 
 import br.com.contato.entity.Contato;
-import br.com.contato.entity.Telefone;
 import br.com.contato.exception.ContatoUnprocessableEntityException;
 import br.com.contato.repository.ContatoRepository;
+import br.com.contato.utils.Utils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ContatoServiceImplTest {
+
     @InjectMocks
     ContatoServiceImpl contatoService;
 
     @Mock
     ContatoRepository contatoRepository;
+
+    private static final String FILE_CONTATO_VALIDO_JSON = "contato_valido.json";
+    private Utils utils = new Utils();
 
     @Test
     public void deveRetornarExcecaoAoBuscarPorIdInexistente(){
@@ -45,7 +48,7 @@ public class ContatoServiceImplTest {
     }
 
     @Test
-    public void deveEditarContatoSucesso(){
+    public void deveEditarContatoSucesso() throws IOException, URISyntaxException {
         Contato contatoTest = getContatoTest();
         when(contatoRepository.findById(contatoTest.getId())).thenReturn(Optional.of(contatoTest));
         contatoTest.setNome("Novo nome");
@@ -63,7 +66,7 @@ public class ContatoServiceImplTest {
     }
 
     @Test
-    public void deveBuscarContatoSucesso(){
+    public void deveBuscarContatoSucesso() throws IOException, URISyntaxException {
         Contato contatoTest = getContatoTest();
         when(contatoRepository.findById(contatoTest.getId())).thenReturn(Optional.of(contatoTest));
         var contatoExistente = contatoService.searchContatoById(contatoTest.getId());
@@ -79,18 +82,8 @@ public class ContatoServiceImplTest {
                 contatoTest.getTelefoneList().stream().findFirst().get().getTelefone());
     }
 
-    private Contato getContatoTest(){
-        Contato contato = new Contato();
-        Telefone telefone = new Telefone();
-        List<Telefone> listTelefone = new ArrayList<Telefone>();
-        contato.setId(1L);
-        contato.setNome("Nome");
-        contato.setEmail("teste@teste.com");
-        telefone.setId(1L);
-        telefone.setContato_id(contato.getId());
-        telefone.setTelefone("12341234");
-        listTelefone.add(telefone);
-        contato.setTelefoneList(listTelefone.stream().collect(Collectors.toList()));
-        return contato;
+    private Contato getContatoTest() throws IOException, URISyntaxException {
+        return this.utils.buildObjectByJson(FILE_CONTATO_VALIDO_JSON, Contato.class);
     }
+
 }
