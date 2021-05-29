@@ -30,9 +30,6 @@ public class ErrorFieldResponse {
 
         @JsonProperty("mensagem")
         private String message;
-
-//        @JsonProperty("valor")
-//        private String value;
     }
 
 }
