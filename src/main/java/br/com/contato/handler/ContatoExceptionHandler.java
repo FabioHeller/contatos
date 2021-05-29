@@ -9,26 +9,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 @ControllerAdvice
-public class ContatoNotFoundHandler {
+public class ContatoExceptionHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(ContatoNotFoundHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(ContatoExceptionHandler.class);
 
     @ExceptionHandler(ContatoUnprocessableEntityException.class)
-    public ResponseEntity<ErrorResponse> ContatoUnprocessableEntityHandler(HttpServletRequest request, ContatoUnprocessableEntityException ex){
+    public ResponseEntity<ErrorResponse> contatoUnprocessableEntityHandler(HttpServletRequest request, ContatoUnprocessableEntityException ex){
         var httpStatus = getHttpStatus(ex);
         var errorResponse = buildErrorResponse(ex.getErrorCode(), ex.getErrorMessage());
-        log.info("\n#ContatoUnprocessableEntityException - ERROR ID INSISTENTE");
+        log.info("#ContatoUnprocessableEntityException - ERROR ID INSISTENTE");
         return new ResponseEntity<>(errorResponse, httpStatus);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorFieldResponse> MethodArgumentNotValidHandler(HttpServletRequest request, MethodArgumentNotValidException ex){
+    public ResponseEntity<ErrorFieldResponse> methodArgumentNotValidHandler(HttpServletRequest request, MethodArgumentNotValidException ex){
         var errorResponseField = buildDefaultValidateionError();
         for(FieldError fieldError: ex.getBindingResult().getFieldErrors()){
             var errorDetail = new ErrorFieldResponse.FieldError();
@@ -36,7 +38,7 @@ public class ContatoNotFoundHandler {
             errorDetail.setMessage(fieldError.getDefaultMessage());
             errorResponseField.getFields().add(errorDetail);
         }
-        log.info("\n#MethodArgumentNotValidException - ERROR CAMPOS INVALIDOS");
+        log.info("#MethodArgumentNotValidException - ERROR CAMPOS INVALIDOS");
         return new ResponseEntity<>(errorResponseField, HttpStatus.BAD_REQUEST);
     }
 
