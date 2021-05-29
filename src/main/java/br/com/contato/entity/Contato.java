@@ -7,6 +7,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class Contato implements Serializable {
     private Long id;
 
     @NotBlank(message = "Nome não pode ser vazio")
+    @Size(min=5, max=80, message="Para nome informe o minímo de 5 e maximmo de 80 caracteres.")
     private String nome;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -30,5 +33,10 @@ public class Contato implements Serializable {
     @JoinColumn(name="contato_id")
     private List<Telefone> telefoneList;
 
+    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
+            +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
+            +"@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+            message="{Email inválido}")
+    @Size(max=80, message="Para email informe o maximmo de 80 caracteres.")
     private String email;
 }
