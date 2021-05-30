@@ -62,7 +62,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\":\"4\",\r\n    \"nome\":\"Manoel Pereira dos Santos\",\r\n    \"telefone\":\"3198765-4444\",\r\n    \"email\":\"teste.com.br\"\r\n}",
+					"raw": "{\r\n    \"nome\":\"Manoel Pereira dos Santos\",\r\n    \"telefone\":\"3198765-4444\",\r\n    \"email\":\"teste.com.br\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -70,7 +70,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8081/api/v1/contatos/atualizar_por_id?id=1",
+					"raw": "localhost:8081/api/v1/contatos/atualizar_por_id?id=4",
 					"host": [
 						"localhost"
 					],
@@ -84,7 +84,7 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "1"
+							"value": "4"
 						}
 					]
 				}

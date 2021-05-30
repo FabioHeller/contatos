@@ -34,9 +34,10 @@ public class ContatoServiceImpl implements ContatoService {
         contatoList
                 .stream()
                 .filter(e -> e.getId().equals(id))
-                .findFirst()
+                .findAny()
                 .ifPresentOrElse(
                         item -> {
+                            contato.setId(item.getId());
                             item.setEmail(contato.getEmail());
                             item.setNome(contato.getNome());
                             item.setTelefone(contato.getTelefone());
