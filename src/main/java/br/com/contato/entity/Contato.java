@@ -1,31 +1,35 @@
 package br.com.contato.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
-@Builder
-@Entity(name="CONTATOS")
+@Entity
+@AllArgsConstructor
 public class Contato implements Serializable {
 
     private static final long serialVersionUID = 5357712845564399596L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="ID", nullable = false)
-   // @JsonIgnore
-    private Long id;
+    @NotBlank(message = "Id não pode ser vazio")
+    private String id;
 
+    @NotBlank(message = "Nome não pode ser vazio")
+    @Size(min=5, max=80, message="Para nome informe o minímo de 5 e maximmo de 80 caracteres.")
     private String nome;
 
     private String telefone;
 
+    @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
+            +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"
+            +"@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+            message="{Email inválido}")
+    @Size(max=80, message="Para email informe o maximmo de 80 caracteres.")
     private String email;
 }

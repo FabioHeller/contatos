@@ -1,14 +1,12 @@
-package br.com.contato.dao;
+package br.com.contato.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
-@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorMessage {
     @JsonProperty("code")
     private String code;
