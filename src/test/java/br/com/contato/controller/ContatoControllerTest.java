@@ -22,10 +22,10 @@ import static org.mockito.Mockito.when;
 @AutoConfigureMockMvc
 public class ContatoControllerTest {
 
-    public static final String API_V1_CONTATOS = "/api/v1/contatos";
-    public static final String API_V1_CONTATOS_DELETAR_POR_ID = "/api/v1/contatos/deletar_por_id";
-    public static final String API_V1_CONTATOS_BUSCAR_POR_ID = "/api/v1/contatos/buscar_por_id";
-    public static final String API_V1_CONTATOS_ATUALIZAR_POR_ID = "/api/v1/contatos/atualizar_por_id";
+    public static final String API_V2_CONTATOS = "/api/v2/contatos";
+    public static final String API_V2_CONTATOS_DELETAR_POR_ID = "/api/v2/contatos/deletar_por_id";
+    public static final String API_V2_CONTATOS_BUSCAR_POR_ID = "/api/v2/contatos/buscar_por_id";
+    public static final String API_V2_CONTATOS_ATUALIZAR_POR_ID = "/api/v2/contatos/atualizar_por_id";
     @Autowired
     private MockMvc mockMvc;
 
@@ -44,7 +44,7 @@ public class ContatoControllerTest {
         contato.setId(null);
         String json = utils.toJsonString(contato);
         this.mockMvc.perform(
-                MockMvcRequestBuilders.post(API_V1_CONTATOS)
+                MockMvcRequestBuilders.post(API_V2_CONTATOS)
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -56,7 +56,7 @@ public class ContatoControllerTest {
         Contato contato = utils.buildObjectByJson(FILE_CONTATO_VALIDO_JSON, Contato.class);
         contatoService.newContato(contato);
         this.mockMvc.perform(
-                MockMvcRequestBuilders.delete(API_V1_CONTATOS_DELETAR_POR_ID)
+                MockMvcRequestBuilders.delete(API_V2_CONTATOS_DELETAR_POR_ID)
                         .queryParam("id", String.valueOf(contato.getId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -68,7 +68,7 @@ public class ContatoControllerTest {
         Contato contato = utils.buildObjectByJson(FILE_CONTATO_VALIDO_JSON, Contato.class);
         contatoService.newContato(contato);
         this.mockMvc.perform(
-                MockMvcRequestBuilders.get(API_V1_CONTATOS_BUSCAR_POR_ID)
+                MockMvcRequestBuilders.get(API_V2_CONTATOS_BUSCAR_POR_ID)
                         .queryParam("id", contato.getId().toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -84,7 +84,7 @@ public class ContatoControllerTest {
         when(contatoRepository.findById(contato.getId())).thenReturn(Optional.of(contato));
         String json = utils.toJsonString(contato);
         this.mockMvc.perform(
-                MockMvcRequestBuilders.put(API_V1_CONTATOS_ATUALIZAR_POR_ID)
+                MockMvcRequestBuilders.put(API_V2_CONTATOS_ATUALIZAR_POR_ID)
                         .content(json)
                         .queryParam("id", "1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -99,7 +99,7 @@ public class ContatoControllerTest {
         contato.setNome(null);
         String json = utils.toJsonString(contato);
         this.mockMvc.perform(
-                MockMvcRequestBuilders.post(API_V1_CONTATOS)
+                MockMvcRequestBuilders.post(API_V2_CONTATOS)
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -113,7 +113,7 @@ public class ContatoControllerTest {
         when(contatoRepository.findById(contato.getId())).thenReturn(Optional.of(contato));
         String json = utils.toJsonString(contato);
         this.mockMvc.perform(
-                MockMvcRequestBuilders.put(API_V1_CONTATOS_ATUALIZAR_POR_ID)
+                MockMvcRequestBuilders.put(API_V2_CONTATOS_ATUALIZAR_POR_ID)
                         .content(json)
                         .queryParam("id", "1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -127,7 +127,7 @@ public class ContatoControllerTest {
         when(contatoRepository.findById(contato.getId())).thenReturn(Optional.of(contato));
         String json = utils.toJsonString(contato);
         this.mockMvc.perform(
-                MockMvcRequestBuilders.put(API_V1_CONTATOS_ATUALIZAR_POR_ID)
+                MockMvcRequestBuilders.put(API_V2_CONTATOS_ATUALIZAR_POR_ID)
                         .content(json)
                         .queryParam("id", "2")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -140,7 +140,7 @@ public class ContatoControllerTest {
         Contato contato = utils.buildObjectByJson(FILE_CONTATO_VALIDO_JSON, Contato.class);
         when(contatoRepository.findById(contato.getId())).thenReturn(Optional.of(contato));
         this.mockMvc.perform(
-                MockMvcRequestBuilders.get(API_V1_CONTATOS_BUSCAR_POR_ID)
+                MockMvcRequestBuilders.get(API_V2_CONTATOS_BUSCAR_POR_ID)
                         .queryParam("id", "2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -152,7 +152,7 @@ public class ContatoControllerTest {
         Contato contato = utils.buildObjectByJson(FILE_CONTATO_VALIDO_JSON, Contato.class);
         when(contatoRepository.findById(contato.getId())).thenReturn(Optional.of(contato));
         this.mockMvc.perform(
-                MockMvcRequestBuilders.delete(API_V1_CONTATOS_DELETAR_POR_ID)
+                MockMvcRequestBuilders.delete(API_V2_CONTATOS_DELETAR_POR_ID)
                         .queryParam("id", "2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))

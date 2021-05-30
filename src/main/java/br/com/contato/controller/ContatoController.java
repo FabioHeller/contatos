@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/contatos")
+@RequestMapping("api/v2/contatos")
 public class ContatoController {
 
     @Autowired

@@ -1,7 +1,7 @@
 package br.com.contato.service.impl;
 
 import br.com.contato.entity.Contato;
-import br.com.contato.exception.ContatoUnprocessableEntityException;
+import br.com.contato.exception.ContatoException;
 import br.com.contato.repository.ContatoRepository;
 import br.com.contato.utils.Utils;
 import org.junit.jupiter.api.Test;
@@ -31,19 +31,19 @@ public class ContatoServiceImplTest {
 
     @Test
     public void deveRetornarExcecaoAoBuscarPorIdInexistente(){
-        assertThrows(ContatoUnprocessableEntityException.class, ()
+        assertThrows(ContatoException.class, ()
                 -> contatoService.searchContatoById(anyLong()));
     }
 
     @Test
     public void deveRetornarExcecaoAoDeletarPorIdInexistente(){
-        assertThrows(ContatoUnprocessableEntityException.class, ()
+        assertThrows(ContatoException.class, ()
                 -> contatoService.deleteContatoById(anyLong()));
     }
 
     @Test
     public void deveRetornarExcecaoAoEditarPorIdInexistente(){
-        assertThrows(ContatoUnprocessableEntityException.class, ()
+        assertThrows(ContatoException.class, ()
                 -> contatoService.updateContatoById(mock(Contato.class),anyLong()));
     }
 

@@ -1,7 +1,6 @@
 package br.com.contato.entity;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -15,7 +14,6 @@ import java.util.List;
 @Entity
 @Table(name="CONTATOS")
 @Data
-@NoArgsConstructor
 public class Contato implements Serializable {
 
     private static final long serialVersionUID = 5357712845564399596L;

@@ -2,7 +2,7 @@ package br.com.contato.handler;
 
 import br.com.contato.dto.ErrorFieldResponse;
 import br.com.contato.dto.ErrorResponse;
-import br.com.contato.exception.ContatoUnprocessableEntityException;
+import br.com.contato.exception.ContatoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -17,16 +17,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 @ControllerAdvice
-public class ContatoExceptionHandler {
+public class ContatoHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(ContatoExceptionHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(ContatoHandler.class);
 
-    @ExceptionHandler(ContatoUnprocessableEntityException.class)
-    public ResponseEntity<ErrorResponse> contatoUnprocessableEntityHandler(HttpServletRequest request, ContatoUnprocessableEntityException ex){
-        var httpStatus = getHttpStatus(ex);
+    @ExceptionHandler(ContatoException.class)
+    public ResponseEntity<ErrorResponse> contatoUnprocessableEntityHandler(ContatoException ex){
         var errorResponse = buildErrorResponse(ex.getErrorCode(), ex.getErrorMessage());
-        log.info("#ContatoUnprocessableEntityException - ERROR ID INSISTENTE");
-        return new ResponseEntity<>(errorResponse, httpStatus);
+        log.info("#ContatoUnprocessableEntityException - ERROR " + ex.getErrorMessage());
+        return new ResponseEntity<>(errorResponse, ex.getHttpStatus());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
