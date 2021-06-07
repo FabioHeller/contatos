@@ -1,4 +1,4 @@
-package br.com.contato.controller;
+package br.com.contato.resource;
 
 import br.com.contato.entity.Contato;
 import br.com.contato.service.ContatoService;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/contatos")
-public class ContatoController {
+public class ContatoResource {
 
     @Autowired
     private ContatoService contatoService;
