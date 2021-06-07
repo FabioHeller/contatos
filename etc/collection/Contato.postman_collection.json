@@ -70,7 +70,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8081/api/v1/contatos/atualizar_por_id?id=4",
+					"raw": "localhost:8081/api/v1/contatos/4",
 					"host": [
 						"localhost"
 					],
@@ -79,13 +79,7 @@
 						"api",
 						"v1",
 						"contatos",
-						"atualizar_por_id"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "4"
-						}
+						"4"
 					]
 				}
 			},
@@ -97,7 +91,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8081/api/v1/contatos/buscar_por_id?id=4",
+					"raw": "localhost:8081/api/v1/contatos/4",
 					"host": [
 						"localhost"
 					],
@@ -106,13 +100,7 @@
 						"api",
 						"v1",
 						"contatos",
-						"buscar_por_id"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "4"
-						}
+						"4"
 					]
 				}
 			},
@@ -124,7 +112,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:8081/api/v1/contatos/deletar_por_id?id=4",
+					"raw": "localhost:8081/api/v1/contatos/4",
 					"host": [
 						"localhost"
 					],
@@ -133,13 +121,7 @@
 						"api",
 						"v1",
 						"contatos",
-						"deletar_por_id"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "4"
-						}
+						"4"
 					]
 				}
 			},

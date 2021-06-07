@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,21 +30,21 @@ public class ContatoResource {
     }
 
     @ApiOperation(value = "Atualizar contato por ID")
-    @PutMapping(path = ("/atualizar_por_id"), consumes = "application/json")
-    public ResponseEntity<?> updateContatoById ( @RequestBody Contato contato, @RequestParam("id") @NotBlank String id){
+    @PutMapping(path = "/{id}", consumes = "application/json")
+    public ResponseEntity<?> updateContatoById ( @RequestBody Contato contato, @NotEmpty @PathVariable ("id") @NotBlank String id){
         return ResponseEntity.ok().body(contatoService.updateContatoById(contatoList, contato, id));
     }
 
     @ApiOperation(value = "Deletar contato por ID")
-    @DeleteMapping(path = "/deletar_por_id", name = "Deletar contato por ID")
-    public ResponseEntity<?> deleteContatoById ( @RequestParam("id") @NotBlank String id){
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> deleteContatoById (@NotEmpty @PathVariable("id") @NotBlank String id){
         contatoService.deleteContatoById(contatoList, id);
         return ResponseEntity.ok().build();
     }
 
     @ApiOperation(value = "Buscar contato por ID")
-    @GetMapping(path = ("/buscar_por_id"))
-    public ResponseEntity<Contato> searchContatoById ( @RequestParam("id") @NotBlank String id){
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Contato> searchContatoById (@NotEmpty @PathVariable ("id") String id){
         return ResponseEntity.ok().body(contatoService.searchContatoById(contatoList, id));
     }
 
