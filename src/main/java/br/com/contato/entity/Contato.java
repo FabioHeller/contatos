@@ -20,7 +20,6 @@ public class Contato implements Serializable {
     @NotBlank(message = "Id não pode ser vazio")
     private String id;
 
-    @NotBlank(message = "Nome não pode ser vazio")
     @Size(min=5, max=80, message="Para nome informe o minímo de 5 e maximmo de 80 caracteres.")
     private String nome;
 
