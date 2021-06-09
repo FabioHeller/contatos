@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ErrorMessage {
+public class ErrorResponse {
     @JsonProperty("code")
     private String code;
 

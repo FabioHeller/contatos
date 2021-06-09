@@ -8,11 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/contatos")
@@ -25,13 +25,13 @@ public class ContatoResource {
 
     @ApiOperation(value = "Inserir novo contato")
     @PostMapping( consumes = "application/json")
-    public ResponseEntity<?> newContato ( @RequestBody Contato contato){
+    public ResponseEntity<?> newContato ( @RequestBody @Valid Contato contato){
         return new ResponseEntity<Contato>(contatoService.newContato(contatoList, contato), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Atualizar contato por ID")
     @PutMapping(path = "/{id}", consumes = "application/json")
-    public ResponseEntity<?> updateContatoById ( @RequestBody Contato contato, @NotEmpty @PathVariable ("id") @NotBlank String id){
+    public ResponseEntity<?> updateContatoById ( @RequestBody @Valid Contato contato, @NotEmpty @PathVariable ("id") @NotBlank String id){
         return ResponseEntity.ok().body(contatoService.updateContatoById(contatoList, contato, id));
     }
 
@@ -51,6 +51,6 @@ public class ContatoResource {
     @ApiOperation(value = "Listar todos contatos")
     @GetMapping
     public ResponseEntity<List<Contato>> listContatos(){
-        return ResponseEntity.ok().body(contatoList.stream().collect(Collectors.toList()));
+        return ResponseEntity.ok().body(contatoService.listContato(contatoList));
     }
 }

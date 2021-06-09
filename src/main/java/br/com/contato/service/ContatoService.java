@@ -13,4 +13,6 @@ public interface ContatoService {
     Contato searchContatoById (List<Contato> contatoList, String id);
 
     void deleteContatoById(List<Contato> contatoList, String id);
+
+    List<Contato> listContato(List<Contato> contatoList);
 }

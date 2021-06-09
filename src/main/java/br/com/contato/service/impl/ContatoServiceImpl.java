@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ContatoServiceImpl implements ContatoService {
@@ -70,5 +71,10 @@ public class ContatoServiceImpl implements ContatoService {
         else {
             contatoList.remove(seachCotanto.get());
         }
+    }
+
+    @Override
+    public List<Contato> listContato(List<Contato> contatoList) {
+        return contatoList.stream().collect(Collectors.toList());
     }
 }
