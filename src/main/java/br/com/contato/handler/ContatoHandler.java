@@ -19,11 +19,8 @@ public class ContatoHandler {
 
     private static final Logger log = LoggerFactory.getLogger(ContatoHandler.class);
 
-    private ErrorResponse errorResponse = new ErrorResponse();
-
-    @ResponseBody
     @ExceptionHandler(ContatoException.class)
-    public Object contatoNotFoundHandler(ContatoException ex){
+    public ResponseEntity<ErrorResponse> contatoUnprocessableEntityHandler(ContatoException ex){
         var errorResponse = buildErrorResponse(ex.getErrorCode(), ex.getErrorMessage());
         log.info("#ContatoUnprocessableEntityException - ERROR " + ex.getErrorMessage());
         return new ResponseEntity<>(errorResponse, ex.getHttpStatus());
@@ -42,6 +39,12 @@ public class ContatoHandler {
         return new ResponseEntity<>(errorResponseField, HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseBody
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> getErroDeSistema(Exception ex){
+        var errorResponse = buildErrorResponse("", "Erro de sistema");
+        return new ResponseEntity<>(errorResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     private HttpStatus getHttpStatus(Throwable ex){
         if(ex.getClass().isAnnotationPresent(ResponseStatus.class)){

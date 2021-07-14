@@ -23,7 +23,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("br.com.contato"))
                 .paths(PathSelectors
-                    .ant("/**"))
+                        .ant("/**"))
                 .build()
                 .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo());

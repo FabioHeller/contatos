@@ -1,29 +1,33 @@
 package br.com.contato.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 
-@Data
 @Entity
-@AllArgsConstructor
+@Table(name="CONTATOS")
+@Data
 public class Contato implements Serializable {
 
     private static final long serialVersionUID = 5357712845564399596L;
 
     @Id
-    @NotBlank(message = "Id não pode ser vazio")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Size(min=5, max=80, message="Para nome informe o minímo de 5 e maximmo de 80 caracteres.")
     private String nome;
 
-    private String telefone;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name="contato_id")
+    private List<Telefone> telefoneList;
 
     @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
             +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*"

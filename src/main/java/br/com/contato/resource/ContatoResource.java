@@ -21,36 +21,34 @@ public class ContatoResource {
     @Autowired
     private ContatoService contatoService;
 
-    List<Contato> contatoList = new ArrayList<Contato>();
-
     @ApiOperation(value = "Inserir novo contato")
     @PostMapping( consumes = "application/json")
     public ResponseEntity<?> newContato ( @RequestBody @Valid Contato contato){
-        return new ResponseEntity<Contato>(contatoService.newContato(contatoList, contato), HttpStatus.CREATED);
+        return new ResponseEntity<Contato>(contatoService.newContato(contato), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Atualizar contato por ID")
     @PutMapping(path = "/{id}", consumes = "application/json")
     public ResponseEntity<?> updateContatoById ( @RequestBody @Valid Contato contato, @NotEmpty @PathVariable ("id") @NotBlank String id){
-        return ResponseEntity.ok().body(contatoService.updateContatoById(contatoList, contato, id));
+        return ResponseEntity.ok().body(contatoService.updateContatoById(contato, id));
     }
 
     @ApiOperation(value = "Deletar contato por ID")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteContatoById (@NotEmpty @PathVariable("id") @NotBlank String id){
-        contatoService.deleteContatoById(contatoList, id);
+        contatoService.deleteContatoById(id);
         return ResponseEntity.ok().build();
     }
 
     @ApiOperation(value = "Buscar contato por ID")
     @GetMapping(path = "/{id}")
     public ResponseEntity<Contato> searchContatoById (@NotEmpty @PathVariable ("id") String id){
-        return ResponseEntity.ok().body(contatoService.searchContatoById(contatoList, id));
+        return ResponseEntity.ok().body(contatoService.searchContatoById(id));
     }
 
     @ApiOperation(value = "Listar todos contatos")
     @GetMapping
     public ResponseEntity<List<Contato>> listContatos(){
-        return ResponseEntity.ok().body(contatoService.listContato(contatoList));
+        return ResponseEntity.ok().body(contatoService.listContato());
     }
 }
